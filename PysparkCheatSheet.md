@@ -64,6 +64,9 @@ df = df.join(person_lookup_table, 'person_id', 'left')
 df = df.join(other_table, df.id == other_table.person_id, 'left')
 
 # Match on multiple columns
+df = df1.join(df2, (df1.x1 == df2.x1) & (df1.x2 == df2.x2))
+
+# Match on multiple columns
 df = df.join(other_table, ['first_name', 'last_name'], 'left')
 
 # Useful for one-liner lookup code joins if you have a bunch
