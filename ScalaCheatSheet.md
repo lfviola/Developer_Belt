@@ -8,6 +8,7 @@ A quick reference guide to the most commonly used patterns and functions in PySp
 
 - [Functional programming](#Functional-programming)
 - [Variables](#Variables)
+- [Loops](#Loops)
 - [Control Sctructures](#Control-Sctructures)
 - [Functions-Methods](#Functions-Methods)
 - [Data Types](#Data-Types)
