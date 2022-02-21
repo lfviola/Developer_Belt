@@ -1,3 +1,3 @@
-# Developper Belt
+# Developer Belt
 
-Here is where I start my copy-and-paste developper activity
+My repository with handy stuff
