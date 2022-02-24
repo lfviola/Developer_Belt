@@ -292,6 +292,25 @@ df = df.withColumn("row_number", F.row_number().over(
     W.partitionBy("first_name", "last_name")
     .orderBy(F.desc("date"))
 )).filter(F.col("row_number") == 1).drop("row_number")
+
+# Count the number of occurences
+df  = spark.createDataFrame(
+  [('1','0'),('2','1'),('3','1'),('4','1'),('5','0'),('6','0')
+   ,('7','1'),('8','1'),('9','1'),('10','1'),('11','0'),('12','0')], 
+  ['Time','Tag1'])\
+    .withColumn('Time', F.col('Time').cast('integer'))\
+    .withColumn('Tag1', F.col('Tag1').cast('integer'))
+
+from pyspark.sql import functions as F, types as T
+from pyspark.sql import Window as W
+
+w1 = W.partitionBy().orderBy().rowsBetween(W.unboundedPreceding, 0)
+w2 = W.partitionBy('Counter2').orderBy().rowsBetween(W.unboundedPreceding, 0)
+
+df.withColumn('Counter1',(col('Tag1')=='0'))\
+    .withColumn('Counter2', F.sum(F.col('Counter1').cast('integer')).over(w1))\
+    .withColumn('Counter3', F.when(col('Tag1')==0, col('Tag1')).otherwise(F.sum('Tag1').over(w2)))\
+    .show()
 ```
 
 ## Advanced Operations
