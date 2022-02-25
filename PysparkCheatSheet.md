@@ -7,6 +7,7 @@ A quick reference guide to the most commonly used patterns and functions in PySp
 #### Table of Contents
 
 - [Common Patterns](#common-patterns)
+    - [Creating DF with schema](#Creating-DF-with-schema)
     - [Importing Functions & Types](#importing-functions--types)
     - [Filtering](#filtering)
     - [Joins](#joins)
@@ -27,6 +28,30 @@ If you can't find what you're looking for, check out the [PySpark Official Docum
 
 ## Common Patterns
 
+#### Creating DF with schema
+
+```python
+from pyspark.sql import functions as F, types as T
+
+data2 = [("James","","Smith","36636","M",3000),
+    ("Michael","Rose","","40288","M",4000),
+    ("Robert","","Williams","42114","M",4000),
+    ("Maria","Anne","Jones","39192","F",4000),
+    ("Jen","Mary","Brown","","F",-1)
+  ]
+
+schema = StructType([ \
+    T.StructField("firstname",T.StringType(),True), \
+    T.StructField("middlename",T.StringType(),True), \
+    T.StructField("lastname",T.StringType(),True), \
+    T.StructField("id", T.StringType(), True), \
+    T.StructField("gender", T.StringType(), True), \
+    T.StructField("salary", T.IntegerType(), True) \
+  ])
+  
+df = spark.createDataFrame(data=data2,schema=schema)
+df.printSchema()
+```
 #### Importing Functions & Types
 
 ```python
