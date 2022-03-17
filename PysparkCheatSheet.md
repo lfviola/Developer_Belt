@@ -23,6 +23,7 @@ A quick reference guide to the most commonly used patterns and functions in PySp
 - [Advanced Operations](#advanced-operations)
     - [Repartitioning](#repartitioning)
     - [UDFs (User Defined Functions](#udfs-user-defined-functions)
+    - [Window Functions](#window-functions)
 
 If you can't find what you're looking for, check out the [PySpark Official Documentation](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html) and add it here!
 
@@ -310,14 +311,7 @@ df = df.groupBy('gender').agg(F.max('age').alias('max_age_by_gender'))
 # Collect a Set of all Rows in Group:       F.collect_set(col)
 # Collect a List of all Rows in Group:      F.collect_list(col)
 df = df.groupBy('age').agg(F.collect_set('name').alias('person_names'))
-
-# Just take the lastest row for each combination (Window Functions)
-from pyspark.sql import Window as W
-df = df.withColumn("row_number", F.row_number().over(
-    W.partitionBy("first_name", "last_name")
-    .orderBy(F.desc("date"))
-)).filter(F.col("row_number") == 1).drop("row_number")
-
+    
 # Count the number of occurences
 df  = spark.createDataFrame(
   [('1','0'),('2','1'),('3','1'),('4','1'),('5','0'),('6','0')
@@ -325,17 +319,6 @@ df  = spark.createDataFrame(
   ['Time','Tag1'])\
     .withColumn('Time', F.col('Time').cast('integer'))\
     .withColumn('Tag1', F.col('Tag1').cast('integer'))
-
-from pyspark.sql import functions as F, types as T
-from pyspark.sql import Window as W
-
-w1 = W.partitionBy().orderBy().rowsBetween(W.unboundedPreceding, 0)
-w2 = W.partitionBy('Counter2').orderBy().rowsBetween(W.unboundedPreceding, 0)
-
-df.withColumn('Counter1',(col('Tag1')=='0'))\
-    .withColumn('Counter2', F.sum(F.col('Counter1').cast('integer')).over(w1))\
-    .withColumn('Counter3', F.when(col('Tag1')==0, col('Tag1')).otherwise(F.sum('Tag1').over(w2)))\
-    .show()
 ```
 
 ## Advanced Operations
@@ -359,4 +342,20 @@ import random
 
 random_name_udf = F.udf(lambda: random.choice(['Bob', 'Tom', 'Amy', 'Jenna']))
 df = df.withColumn('name', random_name_udf())
+```
+
+#### Window Functions
+
+```python
+# Take the lastest row for each combination
+from pyspark.sql import Window as W
+df = df.withColumn("row_number", F.row_number().over(
+    W.partitionBy("first_name", "last_name")
+    .orderBy(F.desc("date"))
+)).filter(F.col("row_number") == 1).drop("row_number")
+
+# Cumulative Sum
+from pyspark.sql import Window as W
+w = W.orderBy('id').rowsBetween(W.unboundedPreceding, 0)
+df.withColumn('cumul_sum', F.sum(F.col('value')).over(w)).show()
 ```
