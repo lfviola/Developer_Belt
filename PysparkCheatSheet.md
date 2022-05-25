@@ -35,10 +35,10 @@ If you can't find what you're looking for, check out the [PySpark Official Docum
 ```python
 df = spark.createDataFrame(
   [
-     (110, 128.0, 1),(110, 127.0, 2),(111, 127.0, 3),(111, 127.0, 4)
-    ,(111, 126.0, 5),(111, 127.0, 6),(109, 126.0, 7),(111, 126.0, 1001)
-    ,(114, 126.0, 1003),(115, 83.0, 1064),(116, 127.0, 1066)
-  ], ['HR', 'maxABP', 'Second']
+     ('123', 'foo'),
+     ('456', 'bar')
+  ], ['id', 'value']
+)
 )
 ```
 
