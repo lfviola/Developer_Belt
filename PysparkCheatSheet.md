@@ -7,6 +7,7 @@ A quick reference guide to the most commonly used patterns and functions in PySp
 #### Table of Contents
 
 - [Common Patterns](#common-patterns)
+    - [Creating DF without schema](#Creating-DF-without-schema)
     - [Creating DF with schema](#Creating-DF-with-schema)
     - [Importing Functions & Types](#importing-functions--types)
     - [Filtering](#filtering)
@@ -28,6 +29,18 @@ A quick reference guide to the most commonly used patterns and functions in PySp
 If you can't find what you're looking for, check out the [PySpark Official Documentation](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html) and add it here!
 
 ## Common Patterns
+
+#### Creating DF without schema
+
+```python
+df = spark.createDataFrame(
+  [
+     (110, 128.0, 1),(110, 127.0, 2),(111, 127.0, 3),(111, 127.0, 4)
+    ,(111, 126.0, 5),(111, 127.0, 6),(109, 126.0, 7),(111, 126.0, 1001)
+    ,(114, 126.0, 1003),(115, 83.0, 1064),(116, 127.0, 1066)
+  ], ['HR', 'maxABP', 'Second']
+)
+```
 
 #### Creating DF with schema
 
