@@ -34,12 +34,17 @@ If you can't find what you're looking for, check out the [PySpark Official Docum
 
 ```python
 df = spark.createDataFrame(
-  [
-     ('123', 'foo'),
-     ('456', 'bar')
-  ], ['id', 'value']
-)
-)
+    [
+    ('2018-03-31','6','1'),
+    ('2018-03-31','27','2'),
+    ('2018-03-31','3','3'),
+    ('2018-03-31','44','4'),
+    ],
+    ["date", "median", "Q"]
+)\
+    .withColumn('date', F.col('date').cast('date'))\
+    .withColumn('median', F.col('median').cast('integer'))\
+    .withColumn('Q', F.col('Q').cast('integer'))
 ```
 
 #### Creating DF with schema
