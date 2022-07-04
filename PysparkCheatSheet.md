@@ -6,7 +6,8 @@ A quick reference guide to the most commonly used patterns and functions in PySp
 
 #### Table of Contents
 
-- [Common Patterns](#common-patterns)
+- [Common Patterns](#common-patterns).
+    - [Creating a single column DF](#Creating a single column DF)   
     - [Creating DF without schema](#Creating-DF-without-schema)
     - [Creating DF with schema](#Creating-DF-with-schema)
     - [Importing Functions & Types](#importing-functions--types)
