@@ -30,6 +30,16 @@ If you can't find what you're looking for, check out the [PySpark Official Docum
 
 ## Common Patterns
 
+#### Creating a single column DF
+
+```python
+df = spark.createDataFrame(
+    [
+    (1,),(2,),(3,)
+    ]
+).toDF("id")
+```
+
 #### Creating DF without schema
 
 ```python
