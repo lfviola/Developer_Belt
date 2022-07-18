@@ -10,6 +10,7 @@ A quick reference guide to the most commonly used patterns and functions in PySp
     - [Creating a single column DF](#Creating-a-single-column-DF)   
     - [Creating DF without schema](#Creating-DF-without-schema)
     - [Creating DF with schema](#Creating-DF-with-schema)
+    - [Creating a json DF](#Creating-a-json-DF)
     - [Importing Functions & Types](#importing-functions--types)
     - [Filtering](#filtering)
     - [Joins](#joins)
@@ -82,6 +83,29 @@ schema = StructType([ \
 df = spark.createDataFrame(data=data2,schema=schema)
 df.printSchema()
 ```
+
+#### Creating a json DF
+
+```python
+from pyspark.sql.types import *
+from pyspark.sql import functions as F
+
+
+data = [('a1', '[{"key":"key1","value":10.0},{"key":"key2","value":20.0}]')
+       ,('a1', '[{"key":"key3","value":30.0},{"key":"key1","value":40.0}]')
+       ,('a2', '[{"key":"key1","value":10.0},{"key":"key1","value":50.0}]')]
+
+
+df = spark.createDataFrame(data, ['id', 'json_str'])\
+    .withColumn('json', F.from_json(
+        F.col('json_str'),
+        ArrayType(StructType([
+            StructField('key', StringType()),
+            StructField('value', DoubleType())
+        ]))
+    ))
+```
+
 #### Importing Functions & Types
 
 ```python
