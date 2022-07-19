@@ -62,7 +62,8 @@ df = spark.createDataFrame(
 #### Creating DF with schema
 
 ```python
-from pyspark.sql import functions as F, types as T
+from pyspark.sql import functions as F
+from pyspark.sql.types import *
 
 data2 = [("James","","Smith","36636","M",3000),
     ("Michael","Rose","","40288","M",4000),
@@ -72,15 +73,16 @@ data2 = [("James","","Smith","36636","M",3000),
   ]
 
 schema = StructType([ \
-    T.StructField("firstname",T.StringType(),True), \
-    T.StructField("middlename",T.StringType(),True), \
-    T.StructField("lastname",T.StringType(),True), \
-    T.StructField("id", T.StringType(), True), \
-    T.StructField("gender", T.StringType(), True), \
-    T.StructField("salary", T.IntegerType(), True) \
+    StructField("firstname",StringType(),True), \
+    StructField("middlename",StringType(),True), \
+    StructField("lastname",StringType(),True), \
+    StructField("id", StringType(), True), \
+    StructField("gender", StringType(), True), \
+    StructField("salary", IntegerType(), True) \
   ])
   
 df = spark.createDataFrame(data=data2,schema=schema)
+df.show()
 df.printSchema()
 ```
 
