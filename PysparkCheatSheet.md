@@ -401,14 +401,19 @@ df = df.withColumn('name', random_name_udf())
 
 ```python
 # Take the lastest row for each combination
-from pyspark.sql import Window as W
-df = df.withColumn("row_number", F.row_number().over(
-    W.partitionBy("first_name", "last_name")
-    .orderBy(F.desc("date"))
-)).filter(F.col("row_number") == 1).drop("row_number")
+from pyspark.sql import Window
+w = Window.partitionBy("first_name", "last_name").orderBy(F.desc("date")
+df.withColumn("row_number", F.row_number().over()))\
+  .filter(F.col("row_number") == 1)\
+  .drop("row_number")
 
 # Cumulative Sum
-from pyspark.sql import Window as W
-w = W.orderBy('id').rowsBetween(W.unboundedPreceding, 0)
-df.withColumn('cumul_sum', F.sum(F.col('value')).over(w)).show()
+from pyspark.sql import Window
+w = Window.orderBy('id').rowsBetween(W.unboundedPreceding, 0)
+df.withColumn('cumul_sum', F.sum(F.col('value')).over(w))
+
+# Take previous day
+from pyspark.sql import Window
+w = Window.orderBy('date')
+df.withColumn('previous_date', F.lag(F.col('date')).over(w))
 ```
