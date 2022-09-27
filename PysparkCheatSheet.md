@@ -27,6 +27,7 @@ A quick reference guide to the most commonly used patterns and functions in PySp
     - [Repartitioning](#repartitioning)
     - [UDFs (User Defined Functions](#udfs-user-defined-functions)
     - [Window Functions](#window-functions)
+    - [Regular Expressions (RegEx)](#regular-rxpressions-(regex))
 
 If you can't find what you're looking for, check out the [PySpark Official Documentation](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html) and add it here!
 
@@ -418,4 +419,13 @@ df.withColumn('cumul_sum', F.sum(F.col('value')).over(w))
 from pyspark.sql import Window
 w = Window.orderBy('date')
 df.withColumn('previous_date', F.lag(F.col('date')).over(w))
+```
+
+#### Regular Expressions (RegEx)
+
+```python
+# Take whatever is between the parenthesis
+df = spark.createDataFrame([('tx=Reach % (YouTube)',)]).toDF("col1")
+import pyspark.sql.functions as F
+df.withColumn("tx", F.regexp_extract(F.col("col1"), r"\(([\w]+)\)", 1)).show()
 ```
