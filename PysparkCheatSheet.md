@@ -98,15 +98,15 @@ data = [('a1', '[{"key":"key1","value":10.0},{"key":"key2","value":20.0}]')
        ,('a1', '[{"key":"key3","value":30.0},{"key":"key1","value":40.0}]')
        ,('a2', '[{"key":"key1","value":10.0},{"key":"key1","value":50.0}]')]
 
-
+my_schema = ArrayType(
+                      StructType([
+                          StructField('key', StringType()),
+                          StructField('value', DoubleType())
+                      ])
+                      )
+    
 df = spark.createDataFrame(data, ['id', 'json_str'])\
-    .withColumn('json', F.from_json(
-        F.col('json_str'),
-        ArrayType(StructType([
-            StructField('key', StringType()),
-            StructField('value', DoubleType())
-        ]))
-    ))
+    .withColumn('json', F.from_json('json_str', my_schema))
 ```
 
 #### Importing Functions & Types
